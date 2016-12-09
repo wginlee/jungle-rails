@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Thank you for ordering from Jungle, <%= @user.first_name %>!</h1>
+    <p>
+      This is what you've ordered:
+    </p>
+
+    <div>
+      <table>
+        <thead>
+          <tr>
+            <th colspan="2">Product</th>
+            <th>Unit Price</th>
+            <th>Quantity</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% line_items = LineItem.where(order_id: @order.id)%>
+          <% line_items.each do |line_item| %>
+            <%= render 'line_item', line_item: line_item %>
+          <% end %>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th colspan="4">
+              TOTAL:
+            </th>
+            <th>
+              <%= @order.total_cents / 100.00 %>
+            </th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </body>
+</html>

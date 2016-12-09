@@ -1,0 +1,17 @@
+Thank you for ordering from Jungle, <%= @user.first_name %>!
+
+This is what you've ordered:
+
+<% line_items = LineItem.where(order_id: @order.id)%>
+<% line_items.each do |line_item| %>
+
+  <% if product = Product.find_by(id: line_item.product_id) %>
+
+    <%= product.name %>
+    $<%= product.price %> x <%= line_item.quantity %> = $<%= line_item.total_price_cents / 100.00 %>
+
+  <% end %>
+
+<% end %>
+
+Total order:  $<%= @order.total_cents / 100.00 %>
