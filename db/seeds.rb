@@ -132,5 +132,21 @@ cat3.products.create!({
   price: 2_483.75
 })
 
+## REVIEWS
+
+User.create!({
+  first_name: 'Bob',
+  last_name: 'Bambi',
+  email: 'wgin.lee@gmail.com',
+  password_digest: 'abc'
+})
+
+Review.create!({
+  product_id: 1,
+  user_id: 1,
+  description: Faker::Hipster.paragraph(1),
+  rating: 5
+})
+
 
 puts "DONE!"
