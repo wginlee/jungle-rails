@@ -22,20 +22,47 @@
           <dd><%= @product.quantity %></dd>
           <dt>Price</dt>
           <dd><%= @product.price %></dd>
+          <dt>Overall Rating</dt>
+          <dd><%= @product.reviews.average('rating') ? @product.reviews.average('rating') : 0.0 %> / 5.0 </dd>
         </dl>
       </div>
     </div>
 
-    <%= form_for [@product, Review.new] do |f| %>
-      <p><%= f.label :rating %> <%= f.select(:rating, 1..5) %></p>
-      <p><%= f.text_area :description %></p>
-      <p><%= f.submit %></p>
+    <% if current_user %>
+      <%= form_for [@product, Review.new] do |f| %>
+        <p><%= f.label :rating %> <%= f.select(:rating, 1..5) %></p>
+        <p><%= f.text_area :description %></p>
+        <p><%= f.submit %></p>
+      <% end %>
     <% end %>
 
-    Reviews
-    <% @product.reviews.each do |review| %>
-      <div><%= review.user.first_name %>: <%= review.description %> <%= review.rating %>/5</div>
-    <% end %>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Reviews</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @product.reviews.order(created_at: :desc).each do |review| %>
+          <tr>
+            <td>
+              <h4><%= review.user.first_name %> <%= review.user.last_name %></h4>
+              <div><%(1..review.rating).each do %><%= fa_icon('star') %><% end %></div>
+              <p><%= review.description %></p>
+            </td>
+            <td>
+              <% if current_user.id == review.user_id %>
+                <%= link_to fa_icon('trash'), [@product, review], class: 'btn btn-sm btn-danger', method: :delete, data: { confirm: "Are you sure?" } %>
+              <% end %>
+            </td>
+          </tr>
+
+        <% end %>
+      </tbody>
+    </table>
+
+
 
   </article>
 
