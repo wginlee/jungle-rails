@@ -23,7 +23,7 @@
           <dt>Price</dt>
           <dd><%= @product.price %></dd>
           <dt>Overall Rating</dt>
-          <dd><%= @product.reviews.average('rating') ? @product.reviews.average('rating') : 0.0 %> / 5.0 </dd>
+          <dd><%= @product.reviews.average('rating') ? "%.2f" % @product.reviews.average('rating') + ' / 5.00' : 'N/A' %></dd>
         </dl>
       </div>
     </div>
